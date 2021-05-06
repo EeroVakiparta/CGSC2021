@@ -1,9 +1,10 @@
 import java.util.*;
-class Action {
+public class Action {
     static final String WAIT = "WAIT";
     static final String SEED = "SEED";
     static final String GROW = "GROW";
     static final String COMPLETE = "COMPELTE";
+
     static Action parse(String action){
         String[] parts = action.split(" ");
         switch (parts[0]){

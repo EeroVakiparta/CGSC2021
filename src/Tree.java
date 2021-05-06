@@ -41,7 +41,7 @@ public class Tree {
     // all napurit -> ja niistä naapurit ja lisää... tulee infinite loop
     // täytyykö kerätä solut jotka on jo tutkittu... kyl
     public void markSeedDistance(List<Cell> board){ // kato saako tän tehtyy 2 listal
-        if(size==0)return;
+        if(size==0 || isDormant)return;
         int distance = 0;
         List<Cell> visitedCells = new ArrayList<>(board.get(cellIndex).getNeighbouringCells(actor.game));
         Queue<Cell> nextNeighbours = new ArrayDeque<>(board.get(cellIndex).getNeighbouringCells(actor.game));
@@ -53,6 +53,7 @@ public class Tree {
         while(!nextNeighbours.isEmpty()){
             Cell nextCell = nextNeighbours.remove();
             nextCell.seedPossible = true;
+            nextCell.sourceTree = board.get(cellIndex);
             List<Cell> newNeighbours = nextCell.getNeighbouringCells(actor.game);
             newNeighbours.removeAll(visitedCells);
             visitedCells.addAll(newNeighbours); // hommaa

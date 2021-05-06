@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,7 @@ public class Actor {
         if(game.day >= 22){
             bestAction = findBestTreeComplete();
         }
+
         if(bestAction == null){
             bestAction = findBestTreeGrow();
         }
@@ -48,8 +50,17 @@ public class Actor {
     private Action findBestTreePlan() {
         // hommaa kaikki cellit filtteröi ja valitse paras
         // richness ++ nostaa arvoa
-        List<Cell> allCells = game.board.stream().filter(e -> e.seedPossible).collect(Collectors.toList());
-        allCells.sort(Comparator.comparingInt(Cell c) -> c.richness).reversed());
+        List<Cell> allCells = game.board.stream()
+                .filter(e -> e.seedPossible)
+                .sorted(Comparator.comparingInt((Cell c) -> c.richness).reversed())
+                .collect(Collectors.toList());
+
+                // ffs dormand puut ei voi siementää joten täsä on probleema
+        // joten pitää antaa siementävä puu
+
+        if(!allCells.isEmpty()){
+            return plantTree(allCells.get(0).sourceTree.index, allCells.get(0).index);
+        }
 
 
         return null;

@@ -44,7 +44,7 @@ public class Game {
     }
 
     public long countTrees(int size){
-        return trees.stream().filter(e -> e.isMine && e.size == size).count();
+        return trees.stream().filter(e -> e.isMine() && e.size == size).count();
     }
 
     public long findGrowTreeCost(Tree tree){
@@ -64,7 +64,7 @@ public class Game {
     }
 
     Action getNextAction(){
-        myself.findBestAction(); // move to actor
+        return myself.findBestAction(); // move to actor
     }
 
     public void readInput(Scanner in){
@@ -72,24 +72,21 @@ public class Game {
         dayChanged = newDay != day;
         int day = newDay; // the game lasts 24 days: 0-23
         int nutrients = in.nextInt(); // the base score you gain from the next COMPLETE action
-        int sun = in.nextInt(); // your sun points
-        int score = in.nextInt(); // your current score
-        int oppSun = in.nextInt(); // opponent's sun points
-        int oppScore = in.nextInt(); // opponent's score
-        boolean oppIsWaiting = in.nextInt() != 0; // whether your opponent is asleep until the next day
-        int numberOfTrees = in.nextInt(); // the current amount of trees
+        myself.sunPoints = in.nextInt(); // your sun points
+        myself.scorePoints = in.nextInt(); // your current score
+        enemy.sunPoints = in.nextInt(); // opponent's sun points
+        enemy.scorePoints = in.nextInt(); // opponent's score
+        opponentIsWaiting = in.nextInt() != 0; // whether your opponent is asleep until the next day
 
         trees.clear();
 
+        int numberOfTrees = in.nextInt(); // the current amount of trees
         for (int i = 0; i < numberOfTrees; i++) {
             int cellIndex = in.nextInt(); // location of this tree
             int size = in.nextInt(); // size of this tree: 0-3
-            boolean isMine = in.nextInt() != 0; // 1 if this is your tree
+            Actor treeOwner = in.nextInt() != 0 ? myself : enemy;
             boolean isDormant = in.nextInt() != 0; // 1 if this tree is dormant
-
-            Actor treeOwner = isMine != 0 ? myself : enemy;
-
-            Tree tree = new Tree(cellIndex,size,isMine,isDormant);
+            Tree tree = new Tree(cellIndex,size,treeOwner,isDormant);
             trees.add(tree);
             board.get(tree.cellIndex).tree = tree;
             if(tree.isMine()){
@@ -98,14 +95,6 @@ public class Game {
                 enemy.trees.add(tree);
             }
         }
-            game.day = day;
-            game.nutrients = nutrients;
-            game.mySun = sun;
-            game.myScore = score;
-            game.opponentSun = oppSun;
-            game.opponentScore = oppScore;
-            game.opponentIsWaiting = oppIsWaiting;
-
 
     }
 

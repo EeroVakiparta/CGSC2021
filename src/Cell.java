@@ -10,6 +10,7 @@ public class Cell {
     int shadow;
     // tulevaisuudessa puut jotenki voi connectaa tuleviin celleihi
     boolean seedPossible = false;
+    Cell sourceTree = null;
     Tree tree = null;
 
     public Cell(int index, int richness, int[] neighbours) {
@@ -24,6 +25,7 @@ public class Cell {
     }
 
     public void clear(){
+        sourceTree = null;
         seedPossible = false;
         shadow = 0;
         tree = null; // Voiko samalle ruudulle plänttää samall roundil millä myi?
@@ -48,7 +50,7 @@ public class Cell {
 
     List<Cell> neighbouringCells(){
         List<Cell> neighbouringCells = new ArrayList<>();
-        for(Cell cell : neighbours){
+        for(int neigbour : neighbours){
             if(neigbour != -1){
                 neighbouringCells.add(game.board.get)
             }
