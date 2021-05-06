@@ -15,22 +15,11 @@ class Player {
 
 
         while (true) {
+            game.resetTurnBeforeInput();
+            game.readInput(in);
+            game.initializeTurn(); // casting shawords
 
 
-
-            int numberOfPossibleMoves = in.nextInt();
-            if (in.hasNextLine()) {
-                in.nextLine();
-            }
-            for (int i = 0; i < numberOfPossibleMoves; i++) {
-                String possibleMove = in.nextLine();
-            }
-
-            // Write an action using System.out.println()
-            // To debug: System.err.println("Debug messages...");
-
-
-            // GROW cellIdx | SEED sourceIdx targetIdx | COMPLETE cellIdx | WAIT <message>
             System.out.println("WAIT");
         }
     }

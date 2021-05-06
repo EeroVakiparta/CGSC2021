@@ -13,9 +13,15 @@ import java.util.Scanner;
 // state -> Board (voiko boardin
 
 // soludata täytyy jotenki laskee
+// ennustaa varjo seuraavale turnille??
+
+// Pitääkö varoa ettei myy kaikkia puita ??
+// varjo näköjään kasvaa vasta vuoron lopus?? Pitääkö vuoron alussa vaan tutkii varjot?
+// Entä jos puun myy? Näyttäis että varjo jää?
 public class Game {
 
     int day;
+    boolean dayChanged = false;
     int nutrients;
     List<Cell> board;
     List<Action> possibleActions;
@@ -24,7 +30,7 @@ public class Game {
     int myScore, opponentScore;
     boolean opponentIsWaiting;
     Actor enemy,myself;
-    int sunDirection = 0;
+    public static int sunDirection = 0;
 
     public Game(List<Cell> board, List<Action> possibleActions, List<Tree> trees) {
         this.board = board;
@@ -69,8 +75,9 @@ public class Game {
     }
 
     public void readInput(Scanner in){
-
-        int day = in.nextInt(); // the game lasts 24 days: 0-23
+        int newDay = in.nextInt();
+        dayChanged = newDay != day;
+        int day = newDay; // the game lasts 24 days: 0-23
         int nutrients = in.nextInt(); // the base score you gain from the next COMPLETE action
         int sun = in.nextInt(); // your sun points
         int score = in.nextInt(); // your current score
@@ -87,9 +94,11 @@ public class Game {
             boolean isMine = in.nextInt() != 0; // 1 if this is your tree
             boolean isDormant = in.nextInt() != 0; // 1 if this tree is dormant
 
+            Actor treeOwner = isMine != 0 ? myself : enemy;
+
             Tree tree = new Tree(cellIndex,size,isMine,isDormant);
             trees.add(tree);
-            if(tree.isMine){
+            if(tree.isMine()){
                 myself.trees.add(tree);
             }else {
                 enemy.trees.add(tree);
@@ -127,5 +136,20 @@ public class Game {
     public void startTurn(){
         myself.startTurn();
         enemy.startTurn();
+        // tee warjot
+        
     }
+
+    public void initializeTurn(){
+        if (dayChanged) {
+            for(Tree tree: trees ){
+                tree.castShadow(board);
+            }
+            for(Cell cell : board){
+                System.error(cell.toString())
+            }
+        }
+
+    }
+
 }
