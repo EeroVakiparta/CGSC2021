@@ -1,8 +1,6 @@
-import java.util.Collection;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 
 // Heuristiikat
 // kasvata keskustaa kohden ? Onko hyvä taku ?
@@ -22,6 +20,7 @@ import java.util.Scanner;
 // Ennusta koska peli loppuu ?+ Haluanko myydä puun vai en ?
 
 // ALA MYYMÄÄN VASTA KU PELI ON LOPPUMAISILLAAN !!!
+// TODO: planttaa enemmän
 public class Game {
 
     int day;
@@ -30,26 +29,25 @@ public class Game {
     List<Cell> board;
     List<Action> possibleActions;
     List<Tree> trees;
-    int mySun, opponentSun;
-    int myScore, opponentScore;
-    boolean opponentIsWaiting;
-    Actor enemy,myself;
+    Actor enemy, myself;
     public static int sunDirection = 0;
+    boolean opponentIsWaiting;
 
-    public Game(List<Cell> board, List<Action> possibleActions, List<Tree> trees) {
-        this.board = board;
-        this.possibleActions = possibleActions;
-        this.trees = trees;
-
+    public Game() {
+        board = new ArrayList<>();
+        possibleActions = new ArrayList<>();
+        trees = new ArrayList<>();
+        enemy = new Actor(ActorType.ENEMY, this);
+        myself = new Actor(ActorType.MYSELF, this);
     }
 
-    public long countTrees(int size){
+    public long countTrees(int size) {
         return trees.stream().filter(e -> e.isMine() && e.size == size).count();
     }
 
-    public long findGrowTreeCost(Tree tree){
+    public long findGrowTreeCost(Tree tree) {
         int baseCost = 0;
-        switch (tree.size){
+        switch (tree.size) {
             case 0:
                 baseCost = 1;
                 break;
@@ -63,11 +61,11 @@ public class Game {
         return countTrees(tree.size + 1) + baseCost;
     }
 
-    Action getNextAction(){
+    Action getNextAction() {
         return myself.findBestAction(); // move to actor
     }
 
-    public void readInput(Scanner in){
+    public void readInput(Scanner in) {
         int newDay = in.nextInt();
         dayChanged = newDay != day;
         int day = newDay; // the game lasts 24 days: 0-23
@@ -86,20 +84,21 @@ public class Game {
             int size = in.nextInt(); // size of this tree: 0-3
             Actor treeOwner = in.nextInt() != 0 ? myself : enemy;
             boolean isDormant = in.nextInt() != 0; // 1 if this tree is dormant
-            Tree tree = new Tree(cellIndex,size,treeOwner,isDormant);
+            Tree tree = new Tree(cellIndex, size, treeOwner, isDormant);
             trees.add(tree);
             board.get(tree.cellIndex).tree = tree;
-            if(tree.isMine()){
+            if (tree.isMine()) {
                 myself.trees.add(tree);
-            }else {
+            } else {
                 enemy.trees.add(tree);
             }
         }
-
+        possibleActions.clear();
+        int numberOfPossibleActions = in.nextInt();
+        in.nextLine();
     }
 
-
-    public void readFirstTurn(Scanner in){
+    public void readFirstTurn(Scanner in) {
         int numberOfCells = in.nextInt(); // 37
         for (int i = 0; i < numberOfCells; i++) {
             int index = in.nextInt(); // 0 is the center cell, the next cells spiral outwards
@@ -110,34 +109,34 @@ public class Game {
             int neigh3 = in.nextInt();
             int neigh4 = in.nextInt();
             int neigh5 = in.nextInt();
-            int neighs[] = new int[] {neigh0,neigh1,neigh2,neigh3,neigh4,neigh5};
-            Cell cell = new Cell(index, richness,neighs);
-            game.board.add(cell);
+            int neighs[] = new int[]{neigh0, neigh1, neigh2, neigh3, neigh4, neigh5};
+            Cell cell = new Cell(index, richness, neighs);
+            board.add(cell);
         }
     }
 
-    public void startTurn(){
+    public void resetTurnBeforeInput() {
         dayChanged = false;
         myself.startTurn();
         enemy.startTurn();
         // tee warjot
-        for(Cell cell: )
-
+        for (Cell cell : board) {
+            cell.startTurn();
+        }
     }
 
-    public void initializeTurn(){
+    public void initializeTurn() {
         if (dayChanged) {
-            for(Tree tree: trees ){
+            for (Tree tree : trees) {
                 tree.castShadow(board);
-
             }
             // ehkä tulevaisuudessa vihulle kans mut nyt vaa omille puille ?
-            for()
-            for(Cell cell : board){
-                System.err(cell.toString())
+            for (Tree tree : myself.trees) {
+                tree.markSeedDistance(board);
+            }
+            for (Cell cell : board) {
+                System.err.println(cell);
             }
         }
-
     }
-
 }

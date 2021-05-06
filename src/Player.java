@@ -1,6 +1,4 @@
-import java.util.*;
-import java.io.*;
-import java.math.*;
+import java.util.Scanner;
 
 /**
  * Auto-generated code below aims at helping you parse
@@ -10,17 +8,17 @@ class Player {
     //MOIMOI
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
+
         Game game = new Game();
         game.readFirstTurn(in);
-
 
         while (true) {
             game.resetTurnBeforeInput();
             game.readInput(in);
             game.initializeTurn(); // casting shawords
 
-
-            System.out.println("WAIT");
+            Action action = game.getNextAction();
+            System.out.println(action);
         }
     }
 }

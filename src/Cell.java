@@ -18,24 +18,25 @@ public class Cell {
         this.richness = richness;
         this.neighbours = neighbours;
     }
+
     // MITÄ HITTIA PUU KASVAA MUT VARJO EI PELIS ?
     // pclean shadows between turns
-    public void startTurn(){
+    public void startTurn() {
         clear();
     }
 
-    public void clear(){
+    public void clear() {
         sourceTree = null;
         seedPossible = false;
         shadow = 0;
         tree = null; // Voiko samalle ruudulle plänttää samall roundil millä myi?
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return tree == null;
     }
 
-    public boolean canGrowOnTile(){
+    public boolean canGrowOnTile() {
         return isEmpty() && richness != 0 && seedPossible; // barrenis ei voi kasvatel ja tulevaisuudessa myös enemy
     }
 
@@ -48,11 +49,11 @@ public class Cell {
                 '}';
     }
 
-    List<Cell> neighbouringCells(){
+    List<Cell> getNeighbouringCells(Game game) {
         List<Cell> neighbouringCells = new ArrayList<>();
-        for(int neigbour : neighbours){
-            if(neigbour != -1){
-                neighbouringCells.add(game.board.get)
+        for (int neigbour : neighbours) {
+            if (neigbour != -1) {
+                neighbouringCells.add(game.board.get(neigbour));
             }
         }
         return neighbouringCells;
