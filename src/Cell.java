@@ -34,7 +34,7 @@ public class Cell {
     }
 
     public boolean canGrowOnTile(){
-        return isEmpty() && richness != 0; // barrenis ei voi kasvatel
+        return isEmpty() && richness != 0 && seedPossible; // barrenis ei voi kasvatel ja tulevaisuudessa myös enemy
     }
 
     @Override
@@ -42,6 +42,7 @@ public class Cell {
         return "Cell{" +
                 "index=" + index +
                 ", shadow=" + shadow +
+                ", seedPossible=" + seedPossible +
                 '}';
     }
 
@@ -52,5 +53,6 @@ public class Cell {
                 neighbouringCells.add(game.board.get)
             }
         }
+        return neighbouringCells;
     }
 }

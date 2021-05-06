@@ -140,9 +140,12 @@ public class Game {
         if (dayChanged) {
             for(Tree tree: trees ){
                 tree.castShadow(board);
+
             }
+            // ehkä tulevaisuudessa vihulle kans mut nyt vaa omille puille ?
+            for()
             for(Cell cell : board){
-                System.error(cell.toString())
+                System.err(cell.toString())
             }
         }
 

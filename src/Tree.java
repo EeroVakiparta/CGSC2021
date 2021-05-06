@@ -43,9 +43,9 @@ public class Tree {
     public void markSeedDistance(List<Cell> board){ // kato saako tän tehtyy 2 listal
         if(size==0)return;
         int distance = 0;
-        List<Cell> cellsToMark = new ArrayList<>(board.get(cellIndex).getNeighbouringCells(actor.game));
-        cellsToMark.add(board.get(cellIndex));
+        List<Cell> visitedCells = new ArrayList<>(board.get(cellIndex).getNeighbouringCells(actor.game));
         Queue<Cell> nextNeighbours = new ArrayDeque<>(board.get(cellIndex).getNeighbouringCells(actor.game));
+        visitedCells.add(board.get(cellIndex));
         List<Cell> nextDistanceCells = new ArrayList<>();
         // jos on koko 1 niin tuhlataan aika pali prosessointiaikaa
 
@@ -54,13 +54,13 @@ public class Tree {
             Cell nextCell = nextNeighbours.remove();
             nextCell.seedPossible = true;
             List<Cell> newNeighbours = nextCell.getNeighbouringCells(actor.game);
-            newNeighbours.removeAll(cellsToMark);
-            cellsToMark.addAll(newNeighbours); // hommaa
+            newNeighbours.removeAll(visitedCells);
+            visitedCells.addAll(newNeighbours); // hommaa
             nextDistanceCells.addAll(newNeighbours);
 
             if(nextNeighbours.isEmpty()){
                 distance++;
-                if(distance > size) break;
+                if(distance >= size) break; // >= jotta ei tehä liikaa rangea +1
                 newNeighbours.addAll(nextDistanceCells);
                 nextDistanceCells.clear(); // puhistaa seuraavaa rangea varte
             }

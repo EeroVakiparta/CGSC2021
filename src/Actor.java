@@ -45,6 +45,8 @@ public class Actor {
     }
 
     private Action findBestTreePlan() {
+        // hommaa kaikki cellit filtteröi ja valitse paras
+        // richness ++ nostaa arvoa
         return null;
     }
 
