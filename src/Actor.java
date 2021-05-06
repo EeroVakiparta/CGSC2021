@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Actor {
     Game game;
@@ -47,6 +48,10 @@ public class Actor {
     private Action findBestTreePlan() {
         // hommaa kaikki cellit filtteröi ja valitse paras
         // richness ++ nostaa arvoa
+        List<Cell> allCells = game.board.stream().filter(e -> e.seedPossible).collect(Collectors.toList());
+        allCells.sort(Comparator.comparingInt(Cell c) -> c.richness).reversed());
+
+
         return null;
     }
 
