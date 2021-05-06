@@ -22,7 +22,6 @@ import java.util.Scanner;
 // ALA MYYMÄÄN VASTA KU PELI ON LOPPUMAISILLAAN !!!
 // TODO: planttaa enemmän
 public class Game {
-
     int day;
     boolean dayChanged = false;
     int nutrients;
@@ -96,6 +95,10 @@ public class Game {
         possibleActions.clear();
         int numberOfPossibleActions = in.nextInt();
         in.nextLine();
+        for(int i = 0; i < numberOfPossibleActions; i++){
+            String possibleAction = in.nextLine();
+            possibleActions.add(Action.parse(possibleAction));
+        }
     }
 
     public void readFirstTurn(Scanner in) {
