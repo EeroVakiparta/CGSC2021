@@ -18,6 +18,10 @@ import java.util.Scanner;
 // Pitääkö varoa ettei myy kaikkia puita ??
 // varjo näköjään kasvaa vasta vuoron lopus?? Pitääkö vuoron alussa vaan tutkii varjot?
 // Entä jos puun myy? Näyttäis että varjo jää?
+// Simuloi päiviä ??
+// Ennusta koska peli loppuu ?+ Haluanko myydä puun vai en ?
+
+// ALA MYYMÄÄN VASTA KU PELI ON LOPPUMAISILLAAN !!!
 public class Game {
 
     int day;
@@ -44,34 +48,23 @@ public class Game {
     }
 
     public long findGrowTreeCost(Tree tree){
-        int baseCost = tree.size == 1 ? 3 : 7;
+        int baseCost = 0;
+        switch (tree.size){
+            case 0:
+                baseCost = 1;
+                break;
+            case 1:
+                baseCost = 3;
+                break;
+            case 2:
+                baseCost = 7;
+                break;
+        }
         return countTrees(tree.size + 1) + baseCost;
     }
 
     Action getNextAction(){
-        for (int i = 0;i< trees.size(); i++){
-            Tree currentTree = trees.get(i);
-            if(currentTree.canComplete() && myself.sunPoints >= 4){
-                return new Action(Action.COMPLETE, trees.get(i).cellIndex);
-            }
-        }
-
-        //LAMDA reverse sorting type explicit ks stackoverflow reverse sort crow best trees
-        trees.sort(Comparator.comparingInt((Tree o) -> board.get(o.cellIndex).richness).reversed());
-
-
-        for (int i = 0;i < trees.size(); i++){
-            Tree currentTree = trees.get(i);
-            //System.err.println(("My sun " + mySun + " my trees: " + trees.stream().filter(e -> e) ;
-            //System.err.pringln("Can gro " + currentTree.canGrow() + " cost: " + findGrowTreeCost(currentTree));
-            if(currentTree.canGrow() && mySun >= findGrowTreeCost((currentTree))){
-                return new Action(Action.GROW, trees.get(i).cellIndex);
-            }
-        }
-
-
-        System.err.println("going to get possible .get(possibleActions.size() - 1");
-        return possibleActions.get(possibleActions.size() - 1);
+        myself.findBestAction(); // move to actor
     }
 
     public void readInput(Scanner in){
@@ -98,6 +91,7 @@ public class Game {
 
             Tree tree = new Tree(cellIndex,size,isMine,isDormant);
             trees.add(tree);
+            board.get(tree.cellIndex).tree = tree;
             if(tree.isMine()){
                 myself.trees.add(tree);
             }else {
@@ -134,10 +128,12 @@ public class Game {
     }
 
     public void startTurn(){
+        dayChanged = false;
         myself.startTurn();
         enemy.startTurn();
         // tee warjot
-        
+        for(Cell cell: )
+
     }
 
     public void initializeTurn(){

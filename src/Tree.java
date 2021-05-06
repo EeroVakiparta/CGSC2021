@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.*;
 
 public class Tree {
 
@@ -36,5 +36,39 @@ public class Tree {
             currentCell.shadow = this.size;
             shadowSize--;
         }
+    }
+    // get all neighbours shadow size -> move to next
+    // all napurit -> ja niistä naapurit ja lisää... tulee infinite loop
+    // täytyykö kerätä solut jotka on jo tutkittu... kyl
+    public void markSeedDistance(List<Cell> board){ // kato saako tän tehtyy 2 listal
+        if(size==0)return;
+        int distance = 0;
+        List<Cell> cellsToMark = new ArrayList<>(board.get(cellIndex).getNeighbouringCells(actor.game));
+        cellsToMark.add(board.get(cellIndex));
+        Queue<Cell> nextNeighbours = new ArrayDeque<>(board.get(cellIndex).getNeighbouringCells(actor.game));
+        List<Cell> nextDistanceCells = new ArrayList<>();
+        // jos on koko 1 niin tuhlataan aika pali prosessointiaikaa
+
+        // puu koko 2 -> size 1 naapurit
+        while(!nextNeighbours.isEmpty()){
+            Cell nextCell = nextNeighbours.remove();
+            nextCell.seedPossible = true;
+            List<Cell> newNeighbours = nextCell.getNeighbouringCells(actor.game);
+            newNeighbours.removeAll(cellsToMark);
+            cellsToMark.addAll(newNeighbours); // hommaa
+            nextDistanceCells.addAll(newNeighbours);
+
+            if(nextNeighbours.isEmpty()){
+                distance++;
+                if(distance > size) break;
+                newNeighbours.addAll(nextDistanceCells);
+                nextDistanceCells.clear(); // puhistaa seuraavaa rangea varte
+            }
+        }
+
+
+
+
+
     }
 }
