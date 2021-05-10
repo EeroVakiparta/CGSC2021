@@ -1,3 +1,6 @@
+# Might need to run following in powershell as admin before script works
+# powershell Set-ExecutionPolicy RemoteSigned
+
 $files = Get-ChildItem -Recurse -Include *.java $PSScriptRoot\src\
 $output = "bundle.java"
 
