@@ -67,8 +67,9 @@ public class Game {
     public void readInput(Scanner in) {
         int newDay = in.nextInt();
         dayChanged = newDay != day;
-        int day = newDay; // the game lasts 24 days: 0-23
-        int nutrients = in.nextInt(); // the base score you gain from the next COMPLETE action
+        day = newDay; // the game lasts 24 days: 0-23
+        sunDirection = day % 6;
+        nutrients = in.nextInt(); // the base score you gain from the next COMPLETE action
         myself.sunPoints = in.nextInt(); // your sun points
         myself.scorePoints = in.nextInt(); // your current score
         enemy.sunPoints = in.nextInt(); // opponent's sun points

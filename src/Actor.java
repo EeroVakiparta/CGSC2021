@@ -27,7 +27,7 @@ public class Actor {
         //LAMDA reverse sorting type explicit ks stackoverflow reverse sort crow best trees
         trees.sort(Comparator.comparingInt((Tree o) -> game.board.get(o.cellIndex).richness).reversed());
 
-        if (game.day >= 22 || (sunPoints > 30 && game.day > 15)) { // tavoittele bonusta
+        if (game.day >= 22 || (sunPoints > 25 && game.day > 15)) { // tavoittele bonusta
             bestAction = findBestTreeComplete();
         }
 
@@ -50,7 +50,7 @@ public class Actor {
         // hommaa kaikki cellit filtteröi ja valitse paras
         // richness ++ nostaa arvoa
         List<Cell> allCells = game.board.stream()
-                .filter(e -> e.seedPossible)
+                .filter(Cell::canGrowOnTile)
                 .sorted(Comparator.comparingInt((Cell c) -> c.richness).reversed())
                 .collect(Collectors.toList());
 

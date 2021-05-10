@@ -2,7 +2,7 @@ public class Action {
     static final String WAIT = "WAIT";
     static final String SEED = "SEED";
     static final String GROW = "GROW";
-    static final String COMPLETE = "COMPELTE";
+    static final String COMPLETE = "COMPLETE";
 
     static Action parse(String action) {
         String[] parts = action.split(" ");
@@ -42,9 +42,9 @@ public class Action {
             return Action.WAIT;
         }
         if (type == SEED) {
-            return String.format("%s %d", type, targetCellIdx);
+            return String.format("%s %d %d", type, sourceCellIdx, targetCellIdx);
         }
-        return String.format("%s, %d", type, targetCellIdx);
+        return String.format("%s %d", type, targetCellIdx);
     }
 }
 
